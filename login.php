@@ -1,6 +1,9 @@
 <?php
-include __DIR__ . '/server/server.php';
+include __DIR__ . '/partials/server/auth.php';
 
+if (isset($_SESSION['userId'])) {
+    header("location: index.php");
+}
 
 include './partials/template/header.php';
 ?>

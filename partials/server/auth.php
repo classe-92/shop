@@ -1,9 +1,7 @@
 <?php
+
 include __DIR__ . '/settings.php';
 
-if (isset($_SESSION['userId'])) {
-    header("location: index.php");
-}
 
 function login($email, $password, $conn)
 {
@@ -19,10 +17,10 @@ function login($email, $password, $conn)
     $num_rows = $result->num_rows;
     echo $num_rows;
     if ($num_rows > 0) {
-        session_start();
         $row = $result->fetch_assoc();
         $_SESSION['userId'] = $row['id'];
         $_SESSION['name'] = $row['name'];
+        $conn->close();
         header("location: index.php");
     } //else {
     //     $_SESSION['userId'] = 0;
@@ -42,9 +40,11 @@ function register($name, $surname, $email, $password, $conn)
 
     $result = $stmt->insert_id;
     var_dump($result);
+
     if ($result) {
         session_start();
         $_SESSION['userId'] = $result;
+        $conn->close();
         header("location: index.php");
     }
 
