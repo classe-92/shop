@@ -1,0 +1,19 @@
+.invalid-feedback {
+    display: block;
+}
+
+main {
+    min-height: calc(100vh - 140px);
+}
+
+footer,
+header {
+    height: 70px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
