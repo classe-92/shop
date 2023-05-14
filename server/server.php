@@ -15,9 +15,9 @@ function login($email, $password, $conn)
     $stmt->execute();
 
     $result = $stmt->get_result();
-
+    var_dump($result);
     $num_rows = $result->num_rows;
-
+    echo $num_rows;
     if ($num_rows > 0) {
         session_start();
         $row = $result->fetch_assoc();
@@ -33,12 +33,26 @@ function login($email, $password, $conn)
 
 function register($name, $surname, $email, $password, $conn)
 {
+    $md5password = md5($password);
+
+    $stmt = $conn->prepare("INSERT INTO `users` (`name`,`surname`,`email` ,`password`) VALUES (?,?,?,?)");
+    $stmt->bind_param('ssss', $name, $surname, $email, $md5password);
+
+    $stmt->execute();
+
+    $result = $stmt->insert_id;
+    var_dump($result);
+    if ($result) {
+        session_start();
+        $_SESSION['userId'] = $result;
+        header("location: index.php");
+    }
 
 }
 
 // verifico se il form è stato correttamente inviato
 if (isset($_POST['loginemail']) && isset($_POST['loginpassword'])) {
-    login($_POST['loginemail'], $_POST['loginemail'], $conn);
+    login($_POST['loginemail'], $_POST['loginpassword'], $conn);
 }
 
 if (isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['email']) && isset($_POST['password'])) {
