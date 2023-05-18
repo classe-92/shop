@@ -10,7 +10,7 @@ class Book extends Model
     public $start_date;
     public function __construct()
     {
-        parent::__construct();
+
     }
 
     // public static function all($conn)

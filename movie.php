@@ -1,12 +1,6 @@
 <?php
-// verifico se la sessione è già stata avviata
-// https://www.php.net/manual/en/function.session-status.php
-// if (session_status() === PHP_SESSION_NONE) {
-//     session_start();
-// }
+include __DIR__ . '/partials/Models/Movie.php';
 
-//include __DIR__ . '/partials/server/settings.php';
-include __DIR__ . '/partials/Models/Book.php';
 if (!isset($_SESSION['userId'])) {
     //https: //www.php.net/manual/en/function.session-destroy.php
     if (ini_get("session.use_cookies")) {
@@ -24,34 +18,32 @@ if (!isset($_SESSION['userId'])) {
     // $sql = "SELECT `title`, `cover_image`,`plot` FROM books";
     // echo $sql;
     // $result = $conn->query($sql);
-    $fields = ['title', 'cover_image', 'plot']; //['*'];
-    $result = Book::fetchAll($conn, $fields, 'books');
+    $fields = ['*'];
+    $result = Movie::fetchAll($conn, $fields, 'movies');
 
-    // $book = Book::fetchOne($conn, 5, 'books', 'Book');
-    // var_dump($book);
     $conn->close();
 }
 
 include './partials/template/header.php';
 ?>
 
-<h1>Books</h1>
+<h1>Movies</h1>
 <div class="row">
     <?php
     if ($result && $result->num_rows > 0) {
         // la query è andata a buon fine e ci sono delle righe di risultati
         //$result->fetch_assoc() - fetch_object('Book')
-        while ($row = $result->fetch_object('Book')) {
+        while ($row = $result->fetch_object('Movie')) {
             ?>
             <div class="col-12 col-sd-6 col-md-4 col-lg-3">
                 <div class="card">
-                    <img src="<?php echo $row->cover_image ?>" class="card-img-top" alt="<?php echo $row->title ?>">
+                    <img src="<?php echo $row->image ?>" class="card-img-top" alt="<?php echo $row->original_title ?>">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <?php echo $row->title ?>
+                            <?php echo $row->original_title ?>
                         </h5>
                         <p class="card-text">
-                            <?php echo $row->getPlot() ?>
+                            <?php echo $row->getFlag() ?>
                         </p>
                         <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>

@@ -1,6 +1,6 @@
 <?php
 include __DIR__ . '/../server/settings.php';
-class Model
+abstract class Model
 {
 
 
@@ -8,13 +8,17 @@ class Model
     {
 
     }
-    public static function fetchAll($conn, $fields, $table)
+    public static function fetchAll($conn, array $fields, $table)
     {
 
         $sql = "SELECT ";
         foreach ($fields as $key => $value) {
+            if ($value !== '*') {
+                $sql .= $key === count($fields) - 1 ? "`$value` " : "`$value`, ";
+            } else {
+                $sql .= $key === count($fields) - 1 ? "$value " : "$value, ";
+            }
 
-            $sql .= $key === count($fields) - 1 ? "`$value` " : "`$value`, ";
         }
         $sql .= "FROM $table";
         echo $sql;
@@ -45,3 +49,4 @@ class Model
         }
     }
 }
+//public function __construct(User ...$Users) { e 2 come li metto ? oppure User[]
